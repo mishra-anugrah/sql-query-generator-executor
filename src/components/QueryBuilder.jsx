@@ -67,16 +67,16 @@ export const QueryBuilder = () => {
     }
   };
 
-  const generateConditionsString = () => {};
+  // const generateConditionsString = () => {};
 
-  const generateColumnsToSelectString = () => {
-    if (columnsToSelect.length) {
-    }
-  };
+  // const generateColumnsToSelectString = () => {
+  //   if (columnsToSelect.length) {
+  //   }
+  // };
 
-  const generateQuery = () => {
-    const query = "SELECT ";
-  };
+  // const generateQuery = () => {
+  //   const query = "SELECT ";
+  // };
 
   return (
     <div className="query-builder">

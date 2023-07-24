@@ -1,5 +1,5 @@
 import { Dropdown } from "./Dropdown";
-import { conditionalOperators, tables } from "../config/queryBuilderConfig";
+import { conditionalOperators } from "../config/queryBuilderConfig";
 import { TextField } from "@mui/material";
 import { Delete } from "@mui/icons-material";
 

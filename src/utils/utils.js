@@ -9,15 +9,15 @@ export const camelCaseToTitle = (camelCase) => {
 export const getColumns = (data, columnsToInclude) => {
   if (Array.isArray(data)) {
     const dataObj = data[0];
-    let columnsFromData;
+    let columnsFromData = [];
 
     if (columnsToInclude) {
-      columnsFromData = Object.keys(dataObj).map((key) => {
+      Object.keys(dataObj).forEach((key) => {
         if (columnsToInclude.includes(key)) {
-          return {
+          columnsFromData.push({
             label: camelCaseToTitle(key),
             value: key,
-          };
+          });
         }
       });
     } else {
@@ -62,48 +62,21 @@ export const getColumnNamesFromQuery = (query) => {
   if (query) {
     query = query.replaceAll(",", " ");
     const queryTokens = query.split(" ");
-    let columns = queryTokens.slice(
-      1,
-      queryTokens.findIndex((token) => token === "from")
-    );
+    let columns = [],
+      columnsFromQuery = queryTokens.slice(
+        1,
+        queryTokens.findIndex((token) => token === "from")
+      );
 
-    if (columns.length === 1 && columns[0] === "*") {
+    if (columnsFromQuery.length === 1 && columnsFromQuery[0] === "*") {
       return schemas.customers.map((columnConfig) => columnConfig.value);
     }
 
-    columns = schemas.customers.map((columnConfig) => {
-      if (columns.includes(columnConfig.value)) {
-        return columnConfig.value;
+    schemas.customers.forEach((columnConfig) => {
+      if (columnsFromQuery.includes(columnConfig.value)) {
+        columns.push(columnConfig.value);
       }
     });
-    return columns.filter((columnName) => !!columnName);
-  }
-};
-
-const pqr = (query) => {
-  if (query) {
-    query = query.replaceAll(",", " ");
-    const queryTokens = query.split(" ");
-    const columns = queryTokens.slice(
-      1,
-      queryTokens.findIndex((token) => token === "from")
-    );
-    if (columns.length === 1 && columns[0] === "*") {
-      return schemas.customers.map((columnConfig) => columnConfig.value);
-    }
-    return columns.filter((columnName) => columnName !== "");
-  }
-};
-
-const abc = (query) => {
-  if (query) {
-    query = query.replaceAll(",", " ");
-    const queryTokens = query.split(" ");
-    const columns = queryTokens.slice(
-      1,
-      queryTokens.findIndex((token) => token === "from")
-    );
-    console.log(columns);
-    return columns.filter((columnName) => columnName !== "");
+    return columnsFromQuery.filter((columnName) => !!columnName);
   }
 };

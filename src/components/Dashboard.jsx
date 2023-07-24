@@ -31,6 +31,7 @@ export const Dashboard = () => {
     if (data) {
       setAllData(data);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data]);
 
   // Setup stored queries
@@ -38,6 +39,7 @@ export const Dashboard = () => {
     if (queries) {
       setStoredQueries(queries);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [queries]);
 
   const handleQueryChange = (_, query) => {

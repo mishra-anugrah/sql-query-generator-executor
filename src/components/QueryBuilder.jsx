@@ -80,7 +80,7 @@ export const QueryBuilder = () => {
 
   return (
     <div className="query-builder">
-      <h4>Query builder</h4>
+      <div className="title">Query builder</div>
       <QueryTable
         selectedTable={selectedTable}
         handleTableChange={handleTableChange}

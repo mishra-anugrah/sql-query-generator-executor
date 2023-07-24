@@ -11,8 +11,9 @@ export const QueryExecutorForm = (props) => {
 
   return (
     <div className="query-executor-form">
-      <FormLabel>Selected query : </FormLabel>
+      <FormLabel className="query-form-field">Selected query : </FormLabel>
       <TextField
+        className="query-form-field"
         value={selectedQuery}
         disabled={disableEditing}
         variant="standard"
@@ -20,7 +21,11 @@ export const QueryExecutorForm = (props) => {
           handleQueryTextChange("customQuery", event.target.value);
         }}
       />
-      <Button variant="contained" onClick={() => handleQueryExecution()}>
+      <Button
+        className="query-form-field"
+        variant="contained"
+        onClick={() => handleQueryExecution()}
+      >
         Execute Query
       </Button>
     </div>

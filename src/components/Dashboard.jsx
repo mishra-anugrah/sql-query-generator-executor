@@ -100,7 +100,7 @@ export const Dashboard = () => {
   return (
     <div className="dashboard">
       <FormControl>
-        <FormLabel>Select app to proceed</FormLabel>
+        <FormLabel className="title">Select app to proceed</FormLabel>
         <RadioGroup
           aria-labelledby="Application-selector-group"
           name="application-selector-group"

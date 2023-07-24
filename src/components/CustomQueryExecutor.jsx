@@ -6,7 +6,9 @@ export const CustomQueryExecutor = (props) => {
 
   return (
     <div className="custom-query-executor">
-      <h4>Custom Query Executor</h4>
+      <div className="title">Custom Query Executor</div>
+
+      <div className="available-columns"></div>
 
       <QueryExecutorForm
         handleQueryExecution={handleQueryExecution}

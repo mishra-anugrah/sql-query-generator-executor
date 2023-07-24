@@ -11,7 +11,7 @@ export const QueryExecutor = (props) => {
 
   return (
     <div className="query-executor">
-      <h4>Pre-defined Query Executor</h4>
+      <div className="title">Pre-defined Query Executor</div>
       <Dropdown
         menuItems={queries}
         value={selectedQuery}

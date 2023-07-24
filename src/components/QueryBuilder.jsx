@@ -1,20 +1,26 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { QueryCondition } from "./QueryCondition";
-import { QueryTable } from "./QueryTable";
 import { AddCondition } from "./AddCondition";
 import { LogicalSwitch } from "./LogicalSwitch";
 import { schemas } from "../config/tableSchemas";
 import { Button } from "@mui/material";
 import { Dropdown } from "./Dropdown";
+import { tablesList } from "../config/queryBuilderConfig";
 
 export const QueryBuilder = () => {
   const [allSchemas] = useState(schemas);
-  const [selectedTable, setSelectedTable] = useState(null);
-  const [columnsToSelect, setColumnsToSelect] = useState([
-    { label: "All", value: "all" },
-  ]);
+  const [tables, setTables] = useState([]);
+  const [selectedTable, setSelectedTable] = useState([]);
+  const [columns, setColumns] = useState([]);
+  const [columnsToSelect, setColumnsToSelect] = useState([]);
   const [conditions, setConditions] = useState([]);
   const [logicalOperator, setLogicalOperator] = useState("and");
+
+  useEffect(() => {
+    if (tablesList) {
+      setTables(tablesList);
+    }
+  }, [tablesList]);
 
   const handleAddCondition = () => {
     const newCondition = {
@@ -48,10 +54,8 @@ export const QueryBuilder = () => {
     else {
       setSelectedTable(table);
       setConditions([]);
-      setColumnsToSelect([
-        { label: "All", value: "all" },
-        ...allSchemas[table],
-      ]);
+      setColumns([{ label: "All", value: "all" }, ...allSchemas[table]]);
+      setColumnsToSelect([]);
     }
   };
 
@@ -61,9 +65,11 @@ export const QueryBuilder = () => {
 
   const handleColumsToFetchChange = (_, columnsToFetch) => {
     if (columnsToFetch.length && columnsToFetch.includes("all")) {
-      setColumnsToSelect([...allSchemas[selectedTable]]);
+      setColumnsToSelect([
+        ...allSchemas[selectedTable].map((column) => column.value),
+      ]);
     } else {
-      setColumnsToSelect(columnsToFetch);
+      setColumnsToSelect([...columnsToFetch]);
     }
   };
 
@@ -81,14 +87,24 @@ export const QueryBuilder = () => {
   return (
     <div className="query-builder">
       <div className="title">Query builder</div>
-      <QueryTable
+      {/* <QueryTable
         selectedTable={selectedTable}
         handleTableChange={handleTableChange}
+      /> */}
+
+      <Dropdown
+        menuItems={tables}
+        value={selectedTable}
+        label="Table"
+        handleDropdownChange={(_, value) => {
+          handleTableChange(value);
+        }}
+        name="table"
       />
       {selectedTable ? (
         <>
           <Dropdown
-            menuItems={columnsToSelect}
+            menuItems={columns.filter((column) => column)}
             isMulti
             label="Columns to select"
             value={columnsToSelect}

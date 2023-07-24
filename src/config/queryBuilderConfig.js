@@ -1,6 +1,7 @@
-export const tables = [
+export const tablesList = [
   { label: "Customers", value: "customers" },
   { label: "Products", value: "products" },
+  { label: "Orders", value: "orders" },
 ];
 
 export const statements = [{ value: "SELECT", label: "SELECT" }];

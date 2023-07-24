@@ -1,3 +1,4 @@
+import { Cancel } from "@mui/icons-material";
 import {
   Chip,
   FormControl,
@@ -27,10 +28,30 @@ export const Dropdown = (props) => {
     return menuItems.find((item) => item.value === value).label;
   };
 
+  // const renderMultiSelectvalue = (selected) => (
+  //   <Stack gap={1} direction="row" flexWrap="wrap">
+  //     {selected.map((value) => (
+  //       <Chip key={value} label={getColumnLabel(value)} />
+  //     ))}
+  //   </Stack>
+  // );
+
   const renderMultiSelectvalue = (selected) => (
     <Stack gap={1} direction="row" flexWrap="wrap">
       {selected.map((value) => (
-        <Chip key={value} label={getColumnLabel(value)} />
+        <Chip
+          key={value}
+          label={value}
+          onDelete={() =>
+            handleDropdownChange(
+              name,
+              selected.filter((item) => item !== value)
+            )
+          }
+          deleteIcon={
+            <Cancel onMouseDown={(event) => event.stopPropagation()} />
+          }
+        />
       ))}
     </Stack>
   );

@@ -3,9 +3,10 @@ import { QueryCondition } from "./QueryCondition";
 import { AddCondition } from "./AddCondition";
 import { LogicalSwitch } from "./LogicalSwitch";
 import { schemas } from "../config/tableSchemas";
-import { Button } from "@mui/material";
+import { Button, Chip, Stack } from "@mui/material";
 import { Dropdown } from "./Dropdown";
 import { tablesList } from "../config/queryBuilderConfig";
+import { Cancel } from "@mui/icons-material";
 
 export const QueryBuilder = () => {
   const [allSchemas] = useState(schemas);
@@ -15,6 +16,8 @@ export const QueryBuilder = () => {
   const [columnsToSelect, setColumnsToSelect] = useState([]);
   const [conditions, setConditions] = useState([]);
   const [logicalOperator, setLogicalOperator] = useState("and");
+  const [allColumnsSelected, setAllColumnsSelected] = useState(true);
+  const [builderError, setBuilderError] = useState(null);
 
   useEffect(() => {
     if (tablesList) {
@@ -56,6 +59,7 @@ export const QueryBuilder = () => {
       setConditions([]);
       setColumns([{ label: "All", value: "all" }, ...allSchemas[table]]);
       setColumnsToSelect([]);
+      setAllColumnsSelected(true);
     }
   };
 
@@ -64,33 +68,80 @@ export const QueryBuilder = () => {
   };
 
   const handleColumsToFetchChange = (_, columnsToFetch) => {
-    if (columnsToFetch.length && columnsToFetch.includes("all")) {
+    if (!columnsToFetch) {
+      setColumnsToSelect([]);
+      return;
+    }
+    if (
+      Array.isArray(columnsToFetch) &&
+      columnsToFetch.length &&
+      columnsToFetch.includes("all")
+    ) {
       setColumnsToSelect([
         ...allSchemas[selectedTable].map((column) => column.value),
       ]);
+      setAllColumnsSelected(true);
     } else {
       setColumnsToSelect([...columnsToFetch]);
+      setAllColumnsSelected(false);
     }
   };
 
-  // const generateConditionsString = () => {};
+  const renderChips = (selected) => (
+    <Stack gap={1} direction="row" flexWrap="wrap">
+      {columnsToSelect.map((value) => (
+        <Chip
+          key={value}
+          label={value}
+          onDelete={() =>
+            setColumnsToSelect(columnsToSelect.filter((item) => item !== value))
+          }
+          deleteIcon={
+            <Cancel onMouseDown={(event) => event.stopPropagation()} />
+          }
+        />
+      ))}
+    </Stack>
+  );
 
-  // const generateColumnsToSelectString = () => {
-  //   if (columnsToSelect.length) {
-  //   }
-  // };
+  const generateConditionsString = () => {
+    const conditionsArray = conditions.map((condition) => {
+      return (
+        condition.columnName + condition.conditionalOperator + condition.value
+      );
+    });
+    return conditionsArray.join(` ${logicalOperator.toUpperCase()} `);
+  };
 
-  // const generateQuery = () => {
-  //   const query = "SELECT ";
-  // };
+  const generateSelectedColumnsString = () => {
+    if (allColumnsSelected) {
+      return "*";
+    }
+
+    if (Array.isArray(columnsToSelect) && columnsToSelect.length) {
+      return columnsToSelect.join(", ");
+    } else {
+      setBuilderError("Invalid column selection");
+    }
+  };
+
+  const generateQuery = () => {
+    let resultQuery = "";
+    const queryType = "SELECT";
+    const columns = generateSelectedColumnsString();
+    const table = selectedTable;
+    const conditions = generateConditionsString();
+
+    resultQuery +=
+      queryType + " " + columns + " FROM " + table + " WHERE " + conditions;
+
+    console.log(resultQuery);
+    return resultQuery;
+  };
 
   return (
     <div className="query-builder">
       <div className="title">Query builder</div>
-      {/* <QueryTable
-        selectedTable={selectedTable}
-        handleTableChange={handleTableChange}
-      /> */}
 
       <Dropdown
         menuItems={tables}
@@ -131,7 +182,9 @@ export const QueryBuilder = () => {
               schema={schemas[selectedTable]}
             />
           ))}
-          <Button variant="contained">Generate Query</Button>
+          <Button variant="contained" onClick={generateQuery}>
+            Generate Query
+          </Button>
         </>
       ) : (
         <></>

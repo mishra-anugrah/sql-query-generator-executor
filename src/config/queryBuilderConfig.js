@@ -16,8 +16,8 @@ export const conditionalOperators = [
 ];
 
 export const logicalOperators = [
-  { label: "AND", value: "and" },
-  { label: "OR", value: "or" },
+  { label: "AND", value: "AND" },
+  { label: "OR", value: "OR" },
 ];
 
 export const sortingOperators = [

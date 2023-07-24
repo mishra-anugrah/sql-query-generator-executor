@@ -17,7 +17,6 @@ export const QueryBuilder = () => {
   const [conditions, setConditions] = useState([]);
   const [logicalOperator, setLogicalOperator] = useState("and");
   const [allColumnsSelected, setAllColumnsSelected] = useState(true);
-  const [builderError, setBuilderError] = useState(null);
 
   useEffect(() => {
     if (tablesList) {
@@ -121,7 +120,7 @@ export const QueryBuilder = () => {
     if (Array.isArray(columnsToSelect) && columnsToSelect.length) {
       return columnsToSelect.join(", ");
     } else {
-      setBuilderError("Invalid column selection");
+      alert("Invalid column selection");
     }
   };
 

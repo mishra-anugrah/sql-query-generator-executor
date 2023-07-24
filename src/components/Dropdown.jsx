@@ -28,20 +28,12 @@ export const Dropdown = (props) => {
     return menuItems.find((item) => item.value === value).label;
   };
 
-  // const renderMultiSelectvalue = (selected) => (
-  //   <Stack gap={1} direction="row" flexWrap="wrap">
-  //     {selected.map((value) => (
-  //       <Chip key={value} label={getColumnLabel(value)} />
-  //     ))}
-  //   </Stack>
-  // );
-
   const renderMultiSelectvalue = (selected) => (
     <Stack gap={1} direction="row" flexWrap="wrap">
       {selected.map((value) => (
         <Chip
           key={value}
-          label={value}
+          label={getColumnLabel(value)}
           onDelete={() =>
             handleDropdownChange(
               name,

@@ -3,10 +3,9 @@ import { QueryCondition } from "./QueryCondition";
 import { AddCondition } from "./AddCondition";
 import { LogicalSwitch } from "./LogicalSwitch";
 import { schemas } from "../config/tableSchemas";
-import { Button, Chip, Stack } from "@mui/material";
+import { Button } from "@mui/material";
 import { Dropdown } from "./Dropdown";
 import { tablesList } from "../config/queryBuilderConfig";
-import { Cancel } from "@mui/icons-material";
 
 export const QueryBuilder = () => {
   const [allSchemas] = useState(schemas);
@@ -22,6 +21,7 @@ export const QueryBuilder = () => {
     if (tablesList) {
       setTables(tablesList);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [tablesList]);
 
   const handleAddCondition = () => {
@@ -85,23 +85,6 @@ export const QueryBuilder = () => {
       setAllColumnsSelected(false);
     }
   };
-
-  const renderChips = (selected) => (
-    <Stack gap={1} direction="row" flexWrap="wrap">
-      {columnsToSelect.map((value) => (
-        <Chip
-          key={value}
-          label={value}
-          onDelete={() =>
-            setColumnsToSelect(columnsToSelect.filter((item) => item !== value))
-          }
-          deleteIcon={
-            <Cancel onMouseDown={(event) => event.stopPropagation()} />
-          }
-        />
-      ))}
-    </Stack>
-  );
 
   const generateConditionsString = () => {
     const conditionsArray = conditions.map((condition) => {

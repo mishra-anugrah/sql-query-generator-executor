@@ -1,5 +1,5 @@
 import React from "react";
-import { Button, FormLabel, TextField, Tooltip } from "@mui/material";
+import { Button, TextField, Tooltip } from "@mui/material";
 
 export const QueryExecutorForm = (props) => {
   const {

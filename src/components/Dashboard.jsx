@@ -54,7 +54,10 @@ export const Dashboard = () => {
   };
 
   const handleQueryExecution = () => {
-    if (selectedApplication === "customQueryExecutor") {
+    if (
+      selectedApplication === "customQueryExecutor" ||
+      selectedApplication === "queryBuilder"
+    ) {
       const selectedColumnsData = getSpecificColumnsData(
         data["select * from customers"],
         getColumnNamesFromQuery(selectedQuery)
@@ -83,7 +86,13 @@ export const Dashboard = () => {
           />
         );
       case "queryBuilder":
-        return <QueryBuilder />;
+        return (
+          <QueryBuilder
+            selectedQuery={selectedQuery}
+            setSelectedQuery={setSelectedQuery}
+            handleQueryExecution={handleQueryExecution}
+          />
+        );
 
       case "customQueryExecutor":
         return (
@@ -99,32 +108,34 @@ export const Dashboard = () => {
   };
   return (
     <div className="dashboard">
-      <FormControl>
-        <FormLabel className="title">Select app to proceed</FormLabel>
-        <RadioGroup
-          aria-labelledby="Application-selector-group"
-          name="application-selector-group"
-          value={selectedApplication}
-          onChange={handleApplicationChange}
-          row
-        >
-          <FormControlLabel
-            value="preDefinedqueryExecutor"
-            control={<Radio />}
-            label="Pre-defined Query Executor"
-          />
-          <FormControlLabel
-            value="queryBuilder"
-            control={<Radio />}
-            label="Query Builder"
-          />
-          <FormControlLabel
-            value="customQueryExecutor"
-            control={<Radio />}
-            label="Custom Query Executor"
-          />
-        </RadioGroup>
-      </FormControl>
+      <div className="app-selector">
+        <FormControl>
+          <FormLabel className="title">Select app to proceed</FormLabel>
+          <RadioGroup
+            aria-labelledby="Application-selector-group"
+            name="application-selector-group"
+            value={selectedApplication}
+            onChange={handleApplicationChange}
+            row
+          >
+            <FormControlLabel
+              value="preDefinedqueryExecutor"
+              control={<Radio />}
+              label="Pre-defined Query Executor"
+            />
+            <FormControlLabel
+              value="queryBuilder"
+              control={<Radio />}
+              label="Query Builder"
+            />
+            <FormControlLabel
+              value="customQueryExecutor"
+              control={<Radio />}
+              label="Custom Query Executor"
+            />
+          </RadioGroup>
+        </FormControl>
+      </div>
 
       {renderSelectedApp(selectedApplication)}
 

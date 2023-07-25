@@ -65,7 +65,7 @@ export const getColumnNamesFromQuery = (query) => {
     let columns = [],
       columnsFromQuery = queryTokens.slice(
         1,
-        queryTokens.findIndex((token) => token === "from")
+        queryTokens.findIndex((token) => /from/i.test(token))
       );
 
     if (columnsFromQuery.length === 1 && columnsFromQuery[0] === "*") {
@@ -79,4 +79,11 @@ export const getColumnNamesFromQuery = (query) => {
     });
     return columnsFromQuery.filter((columnName) => !!columnName);
   }
+};
+
+export const validateConditions = (conditions) => {
+  return conditions.every(
+    (condition) =>
+      condition.columnName && condition.conditionalOperator && condition.value
+  );
 };

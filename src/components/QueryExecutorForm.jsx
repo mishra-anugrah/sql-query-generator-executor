@@ -1,5 +1,5 @@
 import React from "react";
-import { Button, FormLabel, TextField } from "@mui/material";
+import { Button, FormLabel, TextField, Tooltip } from "@mui/material";
 
 export const QueryExecutorForm = (props) => {
   const {
@@ -11,16 +11,18 @@ export const QueryExecutorForm = (props) => {
 
   return (
     <div className="query-executor-form">
-      <FormLabel className="query-form-field">Selected query : </FormLabel>
-      <TextField
-        className="query-form-field"
-        value={selectedQuery}
-        disabled={disableEditing}
-        variant="standard"
-        onChange={(event) => {
-          handleQueryTextChange("customQuery", event.target.value);
-        }}
-      />
+      {/* <FormLabel className="query-form-field">Selected query : </FormLabel> */}
+      <Tooltip title={selectedQuery}>
+        <TextField
+          className="query-form-field"
+          value={selectedQuery}
+          disabled={disableEditing}
+          variant="outlined"
+          onChange={(event) => {
+            handleQueryTextChange("customQuery", event.target.value);
+          }}
+        />
+      </Tooltip>
       <Button
         className="query-form-field"
         variant="contained"

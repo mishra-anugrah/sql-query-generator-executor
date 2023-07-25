@@ -6,11 +6,15 @@ import { schemas } from "../config/tableSchemas";
 import { Button } from "@mui/material";
 import { Dropdown } from "./Dropdown";
 import { tablesList } from "../config/queryBuilderConfig";
+import { QueryExecutorForm } from "./QueryExecutorForm";
+import { validateConditions } from "../utils/utils";
 
-export const QueryBuilder = () => {
+export const QueryBuilder = (props) => {
+  const { selectedQuery, setSelectedQuery, handleQueryExecution } = props;
+
   const [allSchemas] = useState(schemas);
   const [tables, setTables] = useState([]);
-  const [selectedTable, setSelectedTable] = useState([]);
+  const [selectedTable, setSelectedTable] = useState("");
   const [columns, setColumns] = useState([]);
   const [columnsToSelect, setColumnsToSelect] = useState([]);
   const [conditions, setConditions] = useState([]);
@@ -87,12 +91,25 @@ export const QueryBuilder = () => {
   };
 
   const generateConditionsString = () => {
-    const conditionsArray = conditions.map((condition) => {
-      return (
-        condition.columnName + condition.conditionalOperator + condition.value
-      );
-    });
-    return conditionsArray.join(` ${logicalOperator.toUpperCase()} `);
+    if (
+      !conditions ||
+      (Array.isArray(conditions) && conditions.length === 0) ||
+      (Array.isArray(conditions) &&
+        conditions.length > 0 &&
+        validateConditions(conditions))
+      // (conditions.columnName &&
+      //   conditions.conditionalOperator &&
+      //   conditions.value)
+    ) {
+      const conditionsArray = conditions.map((condition) => {
+        return (
+          condition.columnName + condition.conditionalOperator + condition.value
+        );
+      });
+      return conditionsArray.join(` ${logicalOperator.toUpperCase()} `);
+    } else {
+      alert("Please check the conditions");
+    }
   };
 
   const generateSelectedColumnsString = () => {
@@ -108,17 +125,21 @@ export const QueryBuilder = () => {
   };
 
   const generateQuery = () => {
-    let resultQuery = "";
+    if (!selectedTable) {
+      alert("Please select a table");
+      return;
+    }
+    let resultQuery;
     const queryType = "SELECT";
     const columns = generateSelectedColumnsString();
     const table = selectedTable;
     const conditions = generateConditionsString();
 
-    resultQuery +=
-      queryType + " " + columns + " FROM " + table + " WHERE " + conditions;
+    resultQuery = `${queryType} ${columns} FROM ${table} ${
+      conditions ? " WHERE " + conditions : ""
+    }`;
 
-    console.log(resultQuery);
-    return resultQuery;
+    setSelectedQuery(resultQuery);
   };
 
   return (
@@ -168,6 +189,17 @@ export const QueryBuilder = () => {
             Generate Query
           </Button>
         </>
+      ) : (
+        <></>
+      )}
+
+      {selectedQuery ? (
+        <QueryExecutorForm
+          handleQueryExecution={handleQueryExecution}
+          selectedQuery={selectedQuery}
+          disableEditing={true}
+          handleQueryTextChange={() => {}}
+        />
       ) : (
         <></>
       )}

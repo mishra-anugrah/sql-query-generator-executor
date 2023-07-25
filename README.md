@@ -1,7 +1,8 @@
 # SQL Query Builder and Executor
 
-- Built by Anugrah Mishra with ReactJS
+- Built by Anugrah Mishra with `ReactJS`
 - Live demo : https://anm-query-execurator.netlify.app/
+- Load time : 0.2s (Lighthouse)
 
 <br>
 
@@ -9,12 +10,12 @@
 
 <br>
 
-## App insights:
+## App overview:
 
 - The app contains three sections:
 
   - Pre defined queries executor
-  - Query Builder
+  - Query Builder (Build queries using dropdowns)
   - Custom Query Executor
 
 <br>
@@ -29,4 +30,5 @@
 - Optimizations used:
 
   - Avoided in line styling
-  - Lazy loading of data in tables
+  - Used traditional `for` loops at some places insteach of map
+  - **-** : Can use pagination / lazy loading on tables to avoid large loading times as the `orders` table data is around 900 rows

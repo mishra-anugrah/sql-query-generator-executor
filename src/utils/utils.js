@@ -12,14 +12,17 @@ export const getColumns = (data, columnsToInclude) => {
     let columnsFromData = [];
 
     if (columnsToInclude) {
-      Object.keys(dataObj).forEach((key) => {
+      const keys = Object.keys(dataObj);
+
+      for (let i = 0; i < keys.length; i++) {
+        const key = keys[i];
         if (columnsToInclude.includes(key)) {
           columnsFromData.push({
             label: camelCaseToTitle(key),
             value: key,
           });
         }
-      });
+      }
     } else {
       columnsFromData = Object.keys(dataObj).map((key) => ({
         label: camelCaseToTitle(key),
@@ -41,9 +44,10 @@ export const getSpecificColumnsData = (data, columnsToInclude) => {
 
     for (let i = 0; i < data.length; i++) {
       const selectiveDataObject = {};
-      columnsToInclude.forEach((columnName) => {
+      for (let i = 0; i < columnsToInclude.length; i++) {
+        let columnName = columnsToInclude[i];
         selectiveDataObject[columnName] = data[i][columnName];
-      });
+      }
 
       selectiveData.push(selectiveDataObject);
     }
@@ -72,11 +76,13 @@ export const getColumnNamesFromQuery = (query) => {
       return schemas.customers.map((columnConfig) => columnConfig.value);
     }
 
-    schemas.customers.forEach((columnConfig) => {
+    for (let i = 0; i < schemas.customers.length; i++) {
+      const columnConfig = schemas.customers[i];
       if (columnsFromQuery.includes(columnConfig.value)) {
         columns.push(columnConfig.value);
       }
-    });
+    }
+
     return columnsFromQuery.filter((columnName) => !!columnName);
   }
 };
